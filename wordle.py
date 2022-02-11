@@ -53,7 +53,7 @@ class Wordle:
         return correct_letters
 
     def format_common_letters_result(self, common_letters, correct_letters):
-        print(common_letters)
+        #print(common_letters)
         for i in range(len(common_letters)):
             if common_letters[i] in correct_letters:
                 common_letters[i] = " "
