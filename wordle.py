@@ -39,6 +39,7 @@ class Wordle:
             else:
                 common_letters.append(" ")
 
+        print(f"Common: {common_letters}")
         return common_letters
 
     def get_letters_with_correct_index(self, guess: str) -> List[str]:
@@ -49,15 +50,32 @@ class Wordle:
                 correct_letters.append(guess[i])
             else:
                 correct_letters.append(" ")
-
+        print(f"Index: {correct_letters}")
         return correct_letters
 
-    def format_common_letters_result(self, common_letters, correct_letters):
-        #print(common_letters)
+    def word_union(self, common_letters, correct_letters):
+        from collections import Counter
+        new_word = []
+        answer_freq = Counter(self.answer)
+        visited_letters = set()
         for i in range(len(common_letters)):
-            if common_letters[i] in correct_letters:
-                common_letters[i] = " "
-        return common_letters
+            if common_letters[i] == correct_letters[i]:
+                new_word.append(" ")
+            else:
+                if common_letters[i] not in visited_letters and common_letters[i] != " ":
+                    if answer_freq[common_letters[i]] == correct_letters.count(common_letters[i]):
+                        visited_letters.add(common_letters[i])
+                        new_word.append(" ")
+                        continue
+
+                    if answer_freq[common_letters[i]] > new_word.count(common_letters[i]):
+                        new_word.append(common_letters[i])
+                    else:
+                        new_word.append(" ")
+                else:
+                    new_word.append(" ")
+
+        return new_word
 
     def is_allowable_word(self, word: str) -> bool:
         return word.lower() in self.allowable_words or word.lower() in get_answers()
@@ -70,9 +88,9 @@ class Wordle:
             self.guess_word(guess)
             common_letters = self.get_common_letters(guess)
             correct_letters = self.get_letters_with_correct_index(guess)
-            state.append((list(guess),
+            state.append((list(guess.upper()),
                           correct_letters,
-                          self.format_common_letters_result(common_letters, correct_letters)))
+                          self.word_union(common_letters, correct_letters)))
             [print(x) for x in state]
             print("\n")
 
