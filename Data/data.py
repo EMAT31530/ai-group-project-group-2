@@ -1,5 +1,7 @@
 from typing import List
 
+import numpy as np
+
 from root import ROOT_DIR
 
 
@@ -18,8 +20,9 @@ def read_words_from_file(file_path) -> List[str]:
 
 
 def get_allowed_guesses() -> List[str]:
-    return read_words_from_file(f"{ROOT_DIR}/Data/wordle-allowed-guesses.txt")
+    return np.array(read_words_from_file(f"{ROOT_DIR}/Data/wordle-allowed-guesses.txt"))
 
 
 def get_answers() -> List[str]:
-    return read_words_from_file(f"{ROOT_DIR}/Data/wordle-answers-alphabetical.txt")
+    return np.array(read_words_from_file(f"{ROOT_DIR}/Data/wordle-answers-alphabetical.txt"))
+
