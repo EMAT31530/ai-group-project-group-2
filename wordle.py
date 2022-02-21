@@ -9,6 +9,7 @@ class Wordle:
     allowable_words: List[str]
     max_attempts: int
     attempt_number: int
+    won: bool
     is_game_over: bool
 
     def __init__(self, answer=None, max_attempts=6):
@@ -17,18 +18,32 @@ class Wordle:
         self.max_attempts = max_attempts
         self.attempt_number = 0
         self.is_game_over = False
+        self.won = None
+        self.state = []
 
-    def guess_word(self, word: str):
+    def guess_word(self, guess: str):
         self.attempt_number += 1
-        word = word.upper()
-        if not self.is_allowable_word(word):
-            raise Exception(f"{word} is not a valid word.")
+        guess = guess.upper()
+        if not self.is_allowable_word(guess):
+            raise Exception(f"{guess} is not a valid word.")
 
-        if self.attempt_number > self.max_attempts:
-            self.game_over(False)
+        common_letters = self.get_common_letters(guess)
+        correct_letters = self.get_letters_with_correct_index(guess)
 
-        if word == self.answer:
-            self.game_over(True)
+        guess_state = (list(guess.upper()),
+                       correct_letters,
+                       self.word_union(common_letters, correct_letters))
+
+        self.state.append(guess_state)
+        if self.attempt_number >= self.max_attempts:
+            self.is_game_over = True
+            self.won = False
+
+        if guess == self.answer:
+            self.is_game_over = True
+            self.won = True
+
+        return self.state, guess_state, self.won
 
     def get_common_letters(self, guess: str) -> List[str]:
         guess_letters = ''.join(guess.upper())
@@ -39,7 +54,6 @@ class Wordle:
             else:
                 common_letters.append(" ")
 
-        print(f"Common: {common_letters}")
         return common_letters
 
     def get_letters_with_correct_index(self, guess: str) -> List[str]:
@@ -50,7 +64,7 @@ class Wordle:
                 correct_letters.append(guess[i])
             else:
                 correct_letters.append(" ")
-        print(f"Index: {correct_letters}")
+
         return correct_letters
 
     def word_union(self, common_letters, correct_letters):
@@ -81,20 +95,20 @@ class Wordle:
         return word.lower() in self.allowable_words or word.lower() in get_answers()
 
     def play_game(self):
-        state = []
         while not self.is_game_over:
             print(f"Attempt: {self.attempt_number} / {self.max_attempts}")
             guess = input("Guess word: ")
-            self.guess_word(guess)
-            common_letters = self.get_common_letters(guess)
-            correct_letters = self.get_letters_with_correct_index(guess)
-            state.append((list(guess.upper()),
-                          correct_letters,
-                          self.word_union(common_letters, correct_letters)))
-            [print(x) for x in state]
+            _, _, won = self.guess_word(guess)
+
+            [print(x) for x in self.state]
             print("\n")
 
-    def game_over(self, won) -> None:
+        self.print_game_over(self.won)
+
+    def reset(self,):
+        self.__init__()
+
+    def print_game_over(self, won) -> None:
         self.is_game_over = True
         if won:
             print("Well done !")
