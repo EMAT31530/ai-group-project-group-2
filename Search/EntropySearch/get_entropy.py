@@ -1,12 +1,15 @@
+import pickle
 from string import ascii_lowercase
 from scipy.stats import entropy
 
 
 # Find frequency of an alphabet
+from root import ROOT_DIR
+
 AlphaList = ascii_lowercase
-with open('../Data/wordle-answers-alphabetical.txt', 'r') as f:
+with open('../../Data/wordle-answers-alphabetical.txt', 'r') as f:
     WordList = f.readlines()
-with open('../Data/wordle-allowed-guesses.txt', 'r') as f:
+with open('../../Data/wordle-allowed-guesses.txt', 'r') as f:
     WordList += f.readlines()
 WordList = [i.strip('\n') for i in WordList]
 WordListSplit = ''.join(WordList)
@@ -28,3 +31,5 @@ for w in WordList:
     EntropyDic[w] = entropy(Frequency, base=2)
 
 print(EntropyDic[max(EntropyDic)])
+
+pickle.dump(EntropyDic, open('entropy.pkl', 'wb'))
