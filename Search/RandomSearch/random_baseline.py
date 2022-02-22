@@ -1,8 +1,9 @@
 import collections
 
 import matplotlib.pyplot as plt
+import numpy as np
 
-from select_random import simulate
+from random_search import simulate
 
 guesses, win_percents, action_space = simulate("aback", epochs=1000)
 #fig, ax = plt.subplots(2)
@@ -33,4 +34,5 @@ plt.bar(mean_actions.keys(), mean_actions.values())
 plt.show()
 
 print(f"Guess frequencies: {guess_frequencies}")
+print(f"Mean Guesses: {np.mean(guesses)}")
 print(f"Win Proportion: {win_percents[-1] * 100}")
