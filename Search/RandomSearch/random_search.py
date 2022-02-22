@@ -1,22 +1,15 @@
-import collections
-from numpy.random import choice
 # import matplotlib.pyplot as plt
 import numpy as np
+from numpy.random import choice
 
-from wordle import Wordle
-from Data.data import get_answers, get_allowed_guesses
+from Data.data import get_all_words
 from helpers import get_remaining_words_guess_known
+from wordle import Wordle
 
-get_word_list = lambda: np.concatenate((get_answers(), get_allowed_guesses()))
-initial_word_list = get_word_list()
-# print(word_list.shape)
-# print(f"i: {i}")
+initial_word_list = get_all_words()
 random_answer = choice(initial_word_list)
-# print(f"random_answer: {random_answer}")
 w = Wordle(random_answer)
 
-
-# print(w.answer)
 
 def simulate(start_word=None, epochs=100):
     wins = 0
