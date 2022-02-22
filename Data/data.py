@@ -26,3 +26,6 @@ def get_allowed_guesses() -> List[str]:
 def get_answers() -> List[str]:
     return np.array(read_words_from_file(f"{ROOT_DIR}/Data/wordle-answers-alphabetical.txt"))
 
+
+def get_all_words() -> List[str]:
+    return np.concatenate((get_answers(), get_allowed_guesses()))
