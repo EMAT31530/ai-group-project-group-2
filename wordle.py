@@ -1,4 +1,3 @@
-import re
 from random import choice
 from typing import List
 from Data.data import get_allowed_guesses, get_answers
@@ -39,21 +38,11 @@ class Wordle:
             self.is_game_over = True
             self.won = False
 
-<<<<<<< HEAD
-        if self.attempt_number > self.max_attempts:
-            self.game_over(False)
-            return False
-
-        if word == self.answer:
-            self.game_over(True)
-            return True
-=======
         if guess == self.answer:
             self.is_game_over = True
             self.won = True
 
-        return self.state, guess_state, self.won
->>>>>>> 6a0554eb84c0c6ddce0991d89870493d48e1f4a9
+        return self.state, guess_state, self.is_game_over
 
     def get_common_letters(self, guess: str) -> List[str]:
         guess_letters = ''.join(guess.upper())
@@ -108,12 +97,13 @@ class Wordle:
         while not self.is_game_over:
             print(f"Attempt: {self.attempt_number} / {self.max_attempts}")
             guess = input("Guess word: ")
-            _, _, won = self.guess_word(guess)
+            _, _, over = self.guess_word(guess)
 
             [print(x) for x in self.state]
             print("\n")
+            if over:
+                self.print_game_over(self.won)
 
-<<<<<<< HEAD
     def blind_play_game(self, guess):
         state = []
         while not self.is_game_over:
@@ -129,15 +119,10 @@ class Wordle:
             # print("\n")
             return state, game_state
 
-    def game_over(self, won) -> None:
-=======
-        self.print_game_over(self.won)
-
     def reset(self,):
         self.__init__()
 
     def print_game_over(self, won) -> None:
->>>>>>> 6a0554eb84c0c6ddce0991d89870493d48e1f4a9
         self.is_game_over = True
         if won:
             print("Well done !")
