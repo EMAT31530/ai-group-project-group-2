@@ -26,9 +26,11 @@ class Wordle:
 
         if self.attempt_number > self.max_attempts:
             self.game_over(False)
+            return False
 
         if word == self.answer:
             self.game_over(True)
+            return True
 
     def get_common_letters(self, guess: str) -> List[str]:
         guess_letters = ''.join(guess.upper())
@@ -93,6 +95,21 @@ class Wordle:
                           self.word_union(common_letters, correct_letters)))
             [print(x) for x in state]
             print("\n")
+
+    def blind_play_game(self, guess):
+        state = []
+        while not self.is_game_over:
+            print(f"Attempt: {self.attempt_number} / {self.max_attempts}")
+            # guess = input("Guess word: ")
+            game_state = self.guess_word(guess)
+            common_letters = self.get_common_letters(guess)
+            correct_letters = self.get_letters_with_correct_index(guess)
+            state.append((list(guess.upper()),
+                          correct_letters,
+                          self.word_union(common_letters, correct_letters)))
+            # [print(x) for x in state]
+            # print("\n")
+            return state, game_state
 
     def game_over(self, won) -> None:
         self.is_game_over = True
