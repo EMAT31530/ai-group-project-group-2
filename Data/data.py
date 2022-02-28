@@ -1,3 +1,4 @@
+import string
 from typing import List
 
 import numpy as np
@@ -29,3 +30,11 @@ def get_answers() -> List[str]:
 
 def get_all_words() -> List[str]:
     return np.concatenate((get_answers(), get_allowed_guesses()))
+
+
+def decode_letter(index: int) -> str:
+    return string.ascii_lowercase[index]
+
+
+def encode_letter(letter: str) -> int:
+    return string.ascii_lowercase.index(letter)
