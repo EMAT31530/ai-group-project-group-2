@@ -28,8 +28,11 @@ def get_answers() -> List[str]:
     return np.array(read_words_from_file(f"{ROOT_DIR}/Data/wordle-answers-alphabetical.txt"))
 
 
-def get_all_words() -> List[str]:
-    return np.concatenate((get_answers(), get_allowed_guesses()))
+def get_all_words(n_letters=5) -> List[str]:
+    if n_letters == 5:
+        return np.concatenate((get_answers(), get_allowed_guesses()))
+    elif n_letters == 3:
+        return np.array(read_words_from_file(f"{ROOT_DIR}/Data/3_letter_words.txt"))
 
 
 def decode_letter(index: int) -> str:
