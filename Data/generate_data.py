@@ -1,6 +1,7 @@
 import random
 from typing import List
 
+from Data.constants import ACTION_SPACE_SIZES
 from Data.data import get_all_words
 from root import ROOT_DIR
 
@@ -17,13 +18,13 @@ def create_word_lists(n_words_vec: List[str], word_list: List[str], n_letters=5)
                 f.write(f"{word}\n")
 
 
-def generate_from_prexisting(n1, n2):
-    """
+"""def generate_from_prexisting(n1, n2):
+    
 
     :param n1: Closest But Smaller than n1 Word List
     :param n2: New Word List Length
     :return:
-    """
+    
 
     n_words_to_add = n2 - n1
 
@@ -38,9 +39,8 @@ def generate_from_prexisting(n1, n2):
     n1_words.append(random.sample(unique_words), n_words_to_add)
     with open(f"{ROOT_DIR}/Data/{n}_5_letter_words.txt", "w") as f:
         for word in unique_words:
-            f.write(f"{word}\n")
+            f.write(f"{word}\n")"""
 
 
 if __name__ == "__main__":
-    action_space_sizes = [7, 10, 13, 16, 19, 23, 100]
-    create_word_lists(action_space_sizes, get_all_words(), 5)
+    create_word_lists(ACTION_SPACE_SIZES, get_all_words(), 5)
