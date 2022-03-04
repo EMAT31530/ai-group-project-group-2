@@ -3,9 +3,11 @@ import collections
 import matplotlib.pyplot as plt
 import numpy as np
 
+from Search.save_results import save_results
 from vowels_search import simulate
 
 guesses, win_percents, action_space = simulate(epochs=1000)
+save_results("VowelSearch", guesses, win_percents)
 fig, ax = plt.subplots(2)
 
 # Guesses Figure
