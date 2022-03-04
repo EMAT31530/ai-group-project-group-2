@@ -4,14 +4,14 @@ from optuna.pruners import MedianPruner
 from optuna.samplers import TPESampler
 
 
-def optimise_hyperparameters(objective, study=None,n_startup_trials=5, n_evaluations=2,
+def optimise_hyperparameters(objective, study=None, n_startup_trials=5, n_evaluations=2,
                              n_trials=10, n_jobs=3, timeout=900):
     torch.set_num_threads(1)
 
     sampler = TPESampler(n_startup_trials=n_startup_trials)
     # Do not prune before 1/3 of the max budget is used
     pruner = MedianPruner(
-        n_startup_trials=n_startup_trials, n_warmup_steps=n_evaluations// 3
+        n_startup_trials=n_startup_trials, n_warmup_steps=n_evaluations // 3
     )
 
     if not study:
