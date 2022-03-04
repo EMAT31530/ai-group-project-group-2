@@ -54,3 +54,9 @@ def simulate(start_word=None, epochs=100):
         w.reset()
 
     return guesses, win_percents, action_space_size
+
+
+if __name__ == "__main__":
+    letter_frequencies = dict(sorted(letter_frequencies.items(),
+                                     key=lambda item: item[1], reverse=True))
+    print(letter_frequencies)
