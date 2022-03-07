@@ -16,12 +16,13 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
     :param verbose: Verbosity level.
     """
 
-    def __init__(self, check_freq: int, log_dir: str, verbose: int = 1):
+    def __init__(self, model_name, check_freq: int, dir_path: str, verbose: int = 1,
+                 best_mean_reward=-np.inf):
         super(SaveOnBestTrainingRewardCallback, self).__init__(verbose)
         self.check_freq = check_freq
-        self.log_dir = log_dir
-        self.save_path = os.path.join(log_dir, 'best_model')
-        self.best_mean_reward = -np.inf
+        self.dir_path = dir_path
+        self.save_path = os.path.join(dir_path, model_name)
+        self.best_mean_reward = best_mean_reward
 
     def _init_callback(self) -> None:
         # Create folder if needed
@@ -32,7 +33,7 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
         if self.n_calls % self.check_freq == 0:
 
             # Retrieve training reward
-            x, y = ts2xy(load_results(self.log_dir), 'timesteps')
+            x, y = ts2xy(load_results(self.dir_path), 'timesteps')
             if len(x) > 0:
                 # Mean training reward over the last 100 episodes
                 mean_reward = np.mean(y[-100:])
