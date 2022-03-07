@@ -8,7 +8,7 @@ from random_search import simulate
 
 guesses, win_percents, action_space = simulate("aback", epochs=1000)
 save_results("RandomSearch", guesses, win_percents)
-fig, ax = plt.subplots(2)
+"""fig, ax = plt.subplots(2)
 
 # Guesses Figure
 guess_frequencies = collections.Counter(guesses)
@@ -39,7 +39,16 @@ plt.show()
 print(f"Guess frequencies: {guess_frequencies}")
 print(f"Mean Guesses: {np.mean(guesses)}")
 print(f"Win Percent: {win_percents[-1] * 100} %")
+"""
 
+plt.style.use("seaborn-bright")
+plt.bar(action_space.keys(), action_space.values())
+plt.xticks(list(action_space.keys()))
+plt.ylabel("Mean Number of Possible Words")
+plt.xlabel("Guess Number")
+for i, v in enumerate(action_space.values()):
+    plt.text(i - .25 , v + 30, str(round(v, 0)), color='black')
+plt.show()
 
 """
 Mean Guesses: 5.2217573221757325
