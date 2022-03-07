@@ -72,7 +72,7 @@ def plot_expected_observed_win_rate(sizes):
 if __name__ == "__main__":
     plt.style.use("seaborn-bright")
     #sizes = ACTION_SPACE_SIZES
-    sizes = [7, 10, 13, 16, 19, 23]
-    plot_expected_observed_win_rate([7, 10, 13, 16, 19, 23])
+    sizes = [7, 10, 13, 16, 19, 23, 30, 40, 50, 100, 300]
+    plot_expected_observed_win_rate(sizes)
     #plot_rewards([7, 10, 13, 16, 19, 23, 300])
     #plot_win_rates([7, 10, 13, 16, 19, 23, 300])
