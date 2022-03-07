@@ -12,11 +12,12 @@ from ReinforcementLearning.save_on_best_training_reward_callback import SaveOnBe
 from root import ROOT_DIR
 
 
-def train_model(env, model_name, dir_path, model_args, time_steps=100000, policy="MlpPolicy"):
+def train_model(env, model_name, dir_path, model_args, time_steps=100000, policy="MlpPolicy", best_mean_reward=-np.inf):
     os.makedirs(dir_path, exist_ok=True)
     env = Monitor(env, dir_path)
 
-    callback = SaveOnBestTrainingRewardCallback(model_name=model_name, check_freq=1000, dir_path=dir_path)
+    callback = SaveOnBestTrainingRewardCallback(model_name=model_name, check_freq=1000,
+                                                dir_path=dir_path, best_mean_reward=best_mean_reward)
     path = os.path.join(dir_path, model_name + ".zip")
     if os.path.exists(path):
 
