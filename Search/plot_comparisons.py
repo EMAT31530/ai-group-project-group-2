@@ -18,11 +18,13 @@ def plot_mean_guesses(data):
 
 def plot_win_percentages(data):
     for n in data.keys():
-        plt.plot([_ for _ in range(len(data[n][1]))], data[n][1], label=str(n))
+        plt.plot([_ for _ in range(len(data[n][1]))], data[n][1],
+                 label=str(n) + r" ($\bar{g}$ = " + str(round(np.mean(data[n][0]), 2))
+                       + ")")
     plt.title("")
     plt.ylabel("Win Rate")
     plt.xlabel("Games Played")
-    plt.legend()
+    plt.legend(title="Search Metric")
     plt.show()
     plt.clf()
 
@@ -30,9 +32,9 @@ def plot_win_percentages(data):
 if __name__ == "__main__":
     results = {
         "Random": get_results("RandomSearch"),
-        "Letters": get_results("LetterFrequency"),
-        "Vowels": get_results("VowelSearch"),
-        #"Entropy": get_results("EntropySearch")
+        "Letter Frequency": get_results("LetterFrequency"),
+        "Vowels Frequency": get_results("VowelSearch"),
+        "Maximum Entropy": get_results("EntropySearch")
     }
 
     plt.style.use("seaborn-bright")
