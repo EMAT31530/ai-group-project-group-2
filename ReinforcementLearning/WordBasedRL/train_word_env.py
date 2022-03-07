@@ -17,14 +17,14 @@ if __name__ == "__main__":
                        "vf_coef": 0.5253199800797684}
 
     rewards = {50: 15.71,
-               40: 40.19}
-    n = 100
+               100: 40.19}
+    n = 300
     env = gym.make("WordleWord-v0")
     env.change_num_words(n)
     study_file_path = f"{ROOT_DIR}/ReinforcementLearning/WordBasedRL/studies/n={n}/study.pkl"
     model_dir = f"{ROOT_DIR}/ReinforcementLearning/WordBasedRL/models/n={n}"
     model_name = "best_model"
-    model_args = experiment_args if n == 300 else get_best_params(study_file_path)
+    model_args =  get_best_params(study_file_path)
     #del model_args["net_arch"]
     #del model_args["activation_fn"]
     train_model(env=env, model_name=model_name, dir_path=model_dir, model_args=model_args,
