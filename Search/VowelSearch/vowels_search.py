@@ -14,6 +14,7 @@ random_answer = choice(initial_word_list)
 w = Wordle(random_answer)
 vowel_frequencies = pickle.load(open("vowel_frequencies.pkl", "rb"))
 
+
 def max_vowels(word_list: List[str], random=False):
     word_list_vowel_frequencies = {k: vowel_frequencies[k]
                                    for k in vowel_frequencies.keys()
@@ -26,12 +27,14 @@ def max_vowels(word_list: List[str], random=False):
     else:
         return Exception("Not implemented")
 
+
 def simulate(start_word=None, epochs=100):
     wins = 0
     win_percents = []
     guesses = []
     action_space_size = {i: 0 for i in range(1, 7)}
 
+    start_word = max_vowels(initial_word_list, random=True)
     for i in range(epochs):
         word_list = initial_word_list.copy()
         while not w.is_game_over:
