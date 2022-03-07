@@ -3,9 +3,11 @@ import collections
 import matplotlib.pyplot as plt
 import numpy as np
 
+from Search.save_results import save_results
 from entropy_search import simulate
 
-guesses, win_percents, action_space = simulate("aback", epochs=1000)
+guesses, win_percents, action_space = simulate(epochs=1000)
+save_results("EntropySearch", guesses, win_percents)
 fig, ax = plt.subplots(2)
 
 # Guesses Figure
@@ -39,6 +41,7 @@ print(f"Mean Guesses: {np.mean(guesses)}")
 print(f"Win Percentage: {win_percents[-1] * 100}%")
 
 """
-Mean Guesses: 4.684210526315789
-Win Percentage: 9.5%
+Guess frequencies: Counter({5: 0.30095238095238097, 4: 0.29904761904761906, 6: 0.23809523809523808, 3: 0.13333333333333333, 2: 0.02857142857142857})
+Mean Guesses: 4.586666666666667
+Win Percentage: 52.5%
 """
