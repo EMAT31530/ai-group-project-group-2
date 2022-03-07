@@ -16,7 +16,8 @@ if __name__ == "__main__":
                        "max_grad_norm": 0.7,
                        "vf_coef": 0.5253199800797684}
 
-    rewards = {50: 15.71}
+    rewards = {50: 15.71,
+               40: 40.19}
     n = 100
     env = gym.make("WordleWord-v0")
     env.change_num_words(n)
@@ -27,7 +28,7 @@ if __name__ == "__main__":
     #del model_args["net_arch"]
     #del model_args["activation_fn"]
     train_model(env=env, model_name=model_name, dir_path=model_dir, model_args=model_args,
-                time_steps=1000000)  # Saves model
+                time_steps=1000000, best_mean_reward=rewards[n])  # Saves model
 
     x, y = get_smooth_curve(dir_path=model_dir)
 
