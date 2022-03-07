@@ -41,7 +41,7 @@ print(f"Mean Guesses: {np.mean(guesses)}")
 print(f"Win Percentage: {win_percents[-1] * 100}%")
 
 """
-Guess frequencies: Counter({6: 0.4732510288065844, 5: 0.2839506172839506, 4: 0.18106995884773663, 3: 0.05761316872427984, 2: 0.00411522633744856})
-Mean Guesses: 5.1646090534979425
-Win Percentage: 24.3%
+Guess frequencies: Counter({6: 0.4901185770750988, 5: 0.26877470355731226, 4: 0.1857707509881423, 3: 0.039525691699604744, 2: 0.015810276679841896})
+Mean Guesses: 5.177865612648222
+Win Percentage: 25.3%
 """
