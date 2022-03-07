@@ -1,12 +1,11 @@
 import numpy as np
 
-from wordle_env.wordle_env.words.valid_answers import valid_answers
-from wordle_env.wordle_env.words.valid_words import valid_words
+from wordle_env.words.valid_answers import valid_answers
+from wordle_env.words.valid_words import valid_words
 
 
 def convert_letter(c: str) -> int:
     return ord(c) - ord("a")
-
 
 def create_mask():
     all_words = valid_words + valid_answers

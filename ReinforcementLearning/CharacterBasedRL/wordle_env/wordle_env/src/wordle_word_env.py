@@ -6,8 +6,8 @@ import warnings
 import numpy as np
 from gym import spaces
 
-from wordle_env.wordle_env.src.wordle_char_env import OBS_SHAPE
-from wordle_env.wordle_env.src.wordle_char_env import WordleCharEnv
+from wordle_env.src.wordle_char_env import OBS_SHAPE
+from wordle_env.src.wordle_char_env import WordleCharEnv
 
 
 class WordleWordEnv(WordleCharEnv):
@@ -20,6 +20,12 @@ class WordleWordEnv(WordleCharEnv):
         """
         super().__init__()
         self.action_space = spaces.MultiDiscrete([26 for _ in range(OBS_SHAPE[1])])
+        self._prev_step = (
+            self.state,
+            0,
+            False,
+            {},
+        )
 
     def step(self, action: Iterable[int]) -> Tuple[np.ndarray, float, bool, Dict[str, np.ndarray]]:
         """The step function for the environment.
@@ -45,17 +51,20 @@ class WordleWordEnv(WordleCharEnv):
             raise RuntimeError(
                 f"Action must be of length {OBS_SHAPE[1]}, recieved length {len(action)}"
             )
-
+        print("Step  function Called")
         guess = ""
         for c in action:
+            print(f"c = {c}")
             guess += chr(ord("a") + c)
 
         if guess not in self._masker.guess_set:
             warnings.warn("Warning: Word is not in vocab.")
+            print("Word not in Vocab, returning previous step")
             return self._prev_step
 
         obs, reward, done, info = None, None, None, None
         for c in action:
+            print(f"C = {c}")
             obs, reward, done, info = super().step(c, check=False)
 
         return obs, reward, done, info

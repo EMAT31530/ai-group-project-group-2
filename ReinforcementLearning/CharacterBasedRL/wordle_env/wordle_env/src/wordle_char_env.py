@@ -6,17 +6,18 @@ from typing import Tuple
 from colorama import Fore, Style
 from colorama import Back
 
+import random
 import numpy as np
 import gym
 from gym import spaces
 
-from wordle_env.wordle_env.src.helpers import find_matches
-from wordle_env.wordle_env.src.letter_mask import LetterMask
-from wordle_env.wordle_env.words.valid_answers import valid_answers
+from wordle_env.src.helpers import find_matches
+from wordle_env.src.letter_mask import LetterMask
+from wordle_env.words.valid_answers import valid_answers
+from constants import *
 
-OBS_SHAPE = (6, 5, 2)
-OBS_DTYPE = np.float64
-
+"""
+with open"""
 
 class WordleCharEnv(gym.Env):
     """OpenAI Gym environment for wordle, where the action is 5 characters in order for the word.
@@ -48,7 +49,7 @@ class WordleCharEnv(gym.Env):
         self._prev_step = None
 
     def step(
-        self, action: int, check: Optional[bool] = True
+            self, action: int, check: Optional[bool] = False
     ) -> Tuple[np.ndarray, float, bool, Dict[str, np.ndarray]]:
         """The step function for the environment.
 
@@ -80,10 +81,7 @@ class WordleCharEnv(gym.Env):
                 f"Action must be between 0 and 25, got {action}."
             )
 
-        if check and self._masker(self._curr_guess)[action] == 0:
-            warnings.warn("Warning: Letter would create an invalid word.")
-            return self._prev_step
-
+        reward = 0
         self._curr_guess += chr(ord("a") + action)
 
         # Insert the new letter into the right space to get the observation
@@ -97,13 +95,20 @@ class WordleCharEnv(gym.Env):
         done = self.step_num == OBS_SHAPE[0] * OBS_SHAPE[1]
 
         # Calculate reward
-        if len(self._curr_guess) == 5:
+        if len(self._curr_guess) == OBS_SHAPE[1]:
+            if self._curr_guess in self.guesses:
+                reward += SAME_GUESS_REWARD
+            self.guesses.append(self._curr_guess)
             answer_check = find_matches(self._curr_guess, self._answer)
             self.state[row, :, 1] = answer_check
-            reward = np.sum(answer_check)
-            if reward == 5:
-                reward = 10
-                done = True
+            reward += sum([x for x in answer_check if x == 2]) * GREEN_REWARD
+            reward += sum([x for x in answer_check if x == 1]) * YELLOW_REWARD
+            reward += sum([x for x in answer_check if x == 0]) * GREY_REWARD
+            if done:
+                if reward == WIN_REWARD:
+                    reward += WIN_BONUS
+                else:
+                    reward += LOSE_REWARD
             self._curr_guess = ""
         else:
             reward = 0
@@ -127,13 +132,14 @@ class WordleCharEnv(gym.Env):
         """
 
         self._answer = np.random.choice(self.words)
-        self.state = np.zeros((6, 5, 2), dtype=OBS_DTYPE)
+        self.state = np.zeros(OBS_SHAPE, dtype=OBS_DTYPE)
         self.step_num = 0
+        self.guesses = []
         self._masker.reset()
         return self.state
 
     def render(
-        self, mode: Optional[str] = "human", close: Optional[bool] = False
+            self, mode: Optional[str] = "human", close: Optional[bool] = False
     ):
         """Function for rendering the environment in a human-viewable way.
 
@@ -144,6 +150,7 @@ class WordleCharEnv(gym.Env):
         close : Optional[bool]
             Flag for closing the environment. Unused.
         """
+        print(f"Guess {self.step_num // OBS_SHAPE[1]} | Solution = {self._answer}")
         for row in self.state:
             for col in row:
                 if col[0] == 0:
@@ -156,7 +163,7 @@ class WordleCharEnv(gym.Env):
                             + chr(int(col[0]) + ord("a") - 1),
                             end="",
                         )
-                    elif col[1] == 0.5:
+                    elif col[1] == 1:
                         print(
                             Fore.BLACK
                             + Back.YELLOW
@@ -172,7 +179,7 @@ class WordleCharEnv(gym.Env):
                         )
                 print(Style.RESET_ALL, end="")
             print()
-        print(f"Guess {self.step_num // 5}")
+
 
     def seed(self, seed: Optional[int] = 0):
         """Function to seed the random number generation.
