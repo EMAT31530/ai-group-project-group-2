@@ -6,6 +6,7 @@ from numpy.random import choice
 # import matplotlib.pyplot as plt
 import numpy as np
 
+from Search.EntropySearch.calculate_entropy import filter_uncommon_letters
 from wordle import Wordle
 from Data.data import get_all_words
 from helpers import get_remaining_words_guess_known
@@ -17,9 +18,14 @@ w = Wordle(random_answer)
 with open("entropy.pkl", "rb") as f:
     entropy = pickle.load(f)
 
+full_entropy = {word: 0 for word in initial_word_list}
+
+for word in entropy.keys():
+    full_entropy[word] = entropy[word][1]
+
 
 def max_entropy_word(word_list: List[str]) -> str:
-    return max(word_list, key=lambda x: entropy[x])
+    return max(word_list, key=lambda x: full_entropy[x])
 
 
 def simulate(start_word=None, epochs=100):
@@ -35,7 +41,7 @@ def simulate(start_word=None, epochs=100):
                 max_entropy_guess = start_word
             else:
                 max_entropy_guess = max_entropy_word(word_list)
-            # print(random_guess)
+
             _, guess_state, _ = w.guess_word(max_entropy_guess)
             word_list = get_remaining_words_guess_known(word_list, guess_state)
             action_space_size[w.attempt_number] += np.shape(word_list)[0]
