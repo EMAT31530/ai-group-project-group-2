@@ -58,7 +58,7 @@ def get_dictionary(file_name, word_list):
     print("Creating dictionary for first time")
     #                 Computed, mean guesses, % wins
     entropy_dictionary = {word: (False, 0) for word in word_list}
-    save_dictionary(entropy_dictionary)
+    save_dictionary(file_name, entropy_dictionary)
 
     return entropy_dictionary
 
