@@ -61,3 +61,25 @@ def default_params(trial: optuna.Trial) -> Dict[str, Any]:
         "max_grad_norm": max_grad_norm,
         "vf_coef": vf_coef,
     }
+
+
+def reduced_char_ppo_params(trial: optuna.Trial) -> Dict[str, Any]:
+    batch_size = trial.suggest_categorical("batch_size", [32, 64, 128, 256, 512])
+    n_steps = trial.suggest_categorical("n_steps", [64, 128, 256, 512, 1024, 2048])
+    gamma = trial.suggest_categorical("gamma", [0.8, 0.9, 0.95, 0.99, 0.995, 0.999, 0.9999])
+    learning_rate = trial.suggest_loguniform("learning_rate", 1e-5, 1e-3)
+    lr_schedule = "constant"
+    vf_coef = trial.suggest_uniform("vf_coef", 0, 1)
+
+    if batch_size > n_steps:
+        batch_size = n_steps
+
+    if lr_schedule == "linear":
+        learning_rate = linear_schedule(learning_rate)
+
+    return {
+        "batch_size": batch_size,
+        "gamma": gamma,
+        "learning_rate": learning_rate,
+        "vf_coef": vf_coef,
+    }
