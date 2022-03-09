@@ -1,5 +1,6 @@
+import string
+
 import matplotlib.pyplot as plt
-from stable_baselines3 import PPO
 from root import ROOT_DIR
 
 
@@ -11,6 +12,30 @@ def test_model(env, model, tests=1):
             action, _states = model.predict(obs)
             obs, rewards, done, info = env.step(action)
             env.render()
+
+
+def evaluate_character_model(env, model, episodes=1000, verbose=False):
+    win_rates = []
+    wins = 0
+    letter_frequency = {letter: 0 for letter in string.ascii_letters}
+
+    for i in range(episodes):
+        obs = env.reset()
+        done = False
+
+        while not done:
+            action, _states = model.predict(obs)
+
+            obs, rewards, done, info = env.step(action)
+            letter_frequency[string.ascii_letters[action]] += 1
+            if env.won:
+                wins += 1
+            win_rates.append(wins / (i + 1))
+
+            if verbose:
+                env.render()
+
+    return win_rates, letter_frequency
 
 
 def evaluate_word_model(env, model, episodes=1000, play_random=False, verbose=False):
@@ -30,7 +55,7 @@ def evaluate_word_model(env, model, episodes=1000, play_random=False, verbose=Fa
 
             obs, rewards, done, info = env.step(action)
             if env.attempts == 1:
-                starting_words.append(action)
+                starting_words.append(env.decode(action))
             if env.won:
                 guesses.append(env.attempts)
                 wins += 1
