@@ -11,7 +11,7 @@ from wordle import Wordle
 from Data.data import get_all_words
 from helpers import get_remaining_words_guess_known
 
-initial_word_list = get_all_words()
+initial_word_list = filter_uncommon_letters(get_all_words())
 random_answer = choice(initial_word_list)
 w = Wordle(random_answer)
 
@@ -22,6 +22,8 @@ full_entropy = {word: 0 for word in initial_word_list}
 
 for word in entropy.keys():
     full_entropy[word] = entropy[word][1]
+
+print(full_entropy)
 
 
 def max_entropy_word(word_list: List[str]) -> str:
@@ -41,6 +43,9 @@ def simulate(start_word=None, epochs=100):
                 max_entropy_guess = start_word
             else:
                 max_entropy_guess = max_entropy_word(word_list)
+
+            if w.attempt_number == 0:
+                print(max_entropy_guess)
 
             _, guess_state, _ = w.guess_word(max_entropy_guess)
             word_list = get_remaining_words_guess_known(word_list, guess_state)

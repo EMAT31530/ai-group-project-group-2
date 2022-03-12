@@ -34,7 +34,7 @@ if __name__ == "__main__":
         "Random": get_results("RandomSearch"),
         "Letter Frequency": get_results("LetterFrequency"),
         "Vowels Frequency": get_results("VowelSearch"),
-        "Maximum Entropy": get_results("EntropySearch")
+        "Entropy": get_results("EntropySearch")
     }
 
     plt.style.use("seaborn-bright")
