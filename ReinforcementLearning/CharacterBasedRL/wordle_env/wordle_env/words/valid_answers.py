@@ -1,5 +1,3 @@
-import random
-
 valid_answers = [
     "cigar",
     "rebut",
@@ -2318,7 +2316,4 @@ valid_answers = [
     "shave",
 ]
 
-valid_answers = random.sample(valid_answers, 1000)
-
-#with open("wordle_env/words/words.txt", "r") as f:
-#    valid_answers = f.read().split()
+#valid_answers = random.sample(valid_answers, 1000)

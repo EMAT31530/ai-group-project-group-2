@@ -1,7 +1,7 @@
 import numpy as np
 
-from wordle_env.words.valid_answers import valid_answers
-from wordle_env.words.valid_words import valid_words
+from ReinforcementLearning.CharacterBasedRL.wordle_env.wordle_env.words.valid_answers import valid_answers
+from ReinforcementLearning.CharacterBasedRL.wordle_env.wordle_env.words.valid_words import valid_words
 
 
 def convert_letter(c: str) -> int:

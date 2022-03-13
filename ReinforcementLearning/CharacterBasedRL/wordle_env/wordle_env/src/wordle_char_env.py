@@ -11,13 +11,12 @@ import numpy as np
 import gym
 from gym import spaces
 
-from wordle_env.src.helpers import find_matches
-from wordle_env.src.letter_mask import LetterMask
-from wordle_env.words.valid_answers import valid_answers
-from constants import *
+from ReinforcementLearning.CharacterBasedRL.constants import OBS_SHAPE, SAME_GUESS_REWARD, GREEN_REWARD, YELLOW_REWARD, \
+    GREY_REWARD, WIN_REWARD, WIN_BONUS, LOSE_REWARD, OBS_DTYPE
+from ReinforcementLearning.CharacterBasedRL.wordle_env.wordle_env.src.helpers import find_matches
+from ReinforcementLearning.CharacterBasedRL.wordle_env.wordle_env.src.letter_mask import LetterMask
+from ReinforcementLearning.CharacterBasedRL.wordle_env.wordle_env.words.valid_answers import valid_answers
 
-"""
-with open"""
 
 class WordleCharEnv(gym.Env):
     """OpenAI Gym environment for wordle, where the action is 5 characters in order for the word.
@@ -45,6 +44,7 @@ class WordleCharEnv(gym.Env):
         self.step_num = 0
         self._curr_guess = ""
         self._masker = LetterMask()
+        self.won = False
 
         self._prev_step = None
 
@@ -101,11 +101,13 @@ class WordleCharEnv(gym.Env):
             self.guesses.append(self._curr_guess)
             answer_check = find_matches(self._curr_guess, self._answer)
             self.state[row, :, 1] = answer_check
-            reward += sum([x for x in answer_check if x == 2]) * GREEN_REWARD
-            reward += sum([x for x in answer_check if x == 1]) * YELLOW_REWARD
-            reward += sum([x for x in answer_check if x == 0]) * GREY_REWARD
+            reward += sum([1 for x in answer_check if x == 2]) * GREEN_REWARD
+            reward += sum([1 for x in answer_check if x == 1]) * YELLOW_REWARD
+            reward += sum([1 for x in answer_check if x == 0]) * GREY_REWARD
+
             if done:
                 if reward == WIN_REWARD:
+                    self.won = True
                     reward += WIN_BONUS
                 else:
                     reward += LOSE_REWARD
@@ -136,6 +138,7 @@ class WordleCharEnv(gym.Env):
         self.step_num = 0
         self.guesses = []
         self._masker.reset()
+        self.won = False
         return self.state
 
     def render(

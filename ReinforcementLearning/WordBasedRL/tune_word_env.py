@@ -9,7 +9,10 @@ from ReinforcementLearning.tuning import study_hyperparameters, save_study
 from root import ROOT_DIR
 
 if __name__ == "__main__":
-    n = 300
+    n = 70
+    stop = input("Make Sure Env Has Correct Action Space: ").lower() != "y"
+    if stop:
+        exit()
     objective = Objective(env_id="WordleWord-v0", ppo_hyperparameters_func=default_params, )
 
     study_dir = f"{ROOT_DIR}/ReinforcementLearning/WordBasedRL/studies/n={n}/"
@@ -21,6 +24,6 @@ if __name__ == "__main__":
         save_study(study, study_file_path=study_dir + study_name,
                    df_file_path=study_dir + f"{study_name}_results.csv")
 
-        plot_param_importances(study)
-        plt.title(f"n={n}")
-        plt.show()
+        #plot_param_importances(study)
+        #plt.title(f"n={n}")
+        #plt.show()

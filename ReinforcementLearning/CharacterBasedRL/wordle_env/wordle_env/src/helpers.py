@@ -19,4 +19,5 @@ def find_matches(guess: str, answer: str) -> np.ndarray:
         if c1 != c2 and c1 in answer and letters[c1] > 0:
             matches[ix] = 1
             letters[c1] -= 1
+
     return matches

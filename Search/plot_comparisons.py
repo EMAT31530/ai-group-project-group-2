@@ -18,6 +18,7 @@ def plot_mean_guesses(data):
 
 def plot_win_percentages(data):
     for n in data.keys():
+        print(n, data[n][1][-1])
         plt.plot([_ for _ in range(len(data[n][1]))], data[n][1],
                  label=str(n) + r" ($\bar{g}$ = " + str(round(np.mean(data[n][0]), 2))
                        + ")")

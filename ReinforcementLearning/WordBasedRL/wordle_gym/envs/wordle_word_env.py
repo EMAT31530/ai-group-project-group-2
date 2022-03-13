@@ -41,7 +41,7 @@ class WordleWordEnv(gym.Env):
         return words
 
     def __init__(self):
-        self.n = 100
+        self.n = 70
         words = self.get_words(self.n)
         self._solutions = words
         self._valid_words = self._get_valid_words(words)
@@ -49,6 +49,9 @@ class WordleWordEnv(gym.Env):
         self.observation_space = spaces.MultiDiscrete([3] * TOTAL_GUESSES * WORD_LENGTH)
         np.random.seed(0)
         self.reset()
+
+    def decode(self, action):
+        return self._valid_words[action][0]
 
     def change_num_words(self, n):
         self.n = n

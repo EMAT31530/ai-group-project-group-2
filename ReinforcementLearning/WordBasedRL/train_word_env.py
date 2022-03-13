@@ -1,4 +1,5 @@
 import gym
+import numpy as np
 
 from ReinforcementLearning.training import train_model, get_best_params, get_smooth_curve, plot_learning_curve
 import ReinforcementLearning.WordBasedRL.wordle_gym
@@ -17,18 +18,21 @@ if __name__ == "__main__":
                        "vf_coef": 0.5253199800797684}
 
     rewards = {50: 15.71,
-               100: 40.19}
-    n = 300
+               100: 40.19,
+               40: 28,
+               30: 48.27,
+               60: 14.6,
+               70: 21.78}
+    n = 70
     env = gym.make("WordleWord-v0")
     env.change_num_words(n)
     study_file_path = f"{ROOT_DIR}/ReinforcementLearning/WordBasedRL/studies/n={n}/study.pkl"
     model_dir = f"{ROOT_DIR}/ReinforcementLearning/WordBasedRL/models/n={n}"
     model_name = "best_model"
-    model_args =  get_best_params(study_file_path)
-    #del model_args["net_arch"]
-    #del model_args["activation_fn"]
+    model_args = get_best_params(study_file_path)
+
     train_model(env=env, model_name=model_name, dir_path=model_dir, model_args=model_args,
-                time_steps=1000000, best_mean_reward=rewards[n])  # Saves model
+                time_steps=100000, best_mean_reward=rewards[n])  # Saves model
 
     x, y = get_smooth_curve(dir_path=model_dir)
 

@@ -60,19 +60,22 @@ def plot_win_rates(sizes):
 def plot_expected_observed_win_rate(sizes):
     data = {n: get_word_evaluation_results(n) for n in sizes}
 
-    expected_win_rates = [6 / n for n in sizes]
+    expected_win_rates = [6 / n for n in range(min(sizes), max(sizes) + 1)]
     observed_win_rates = [data[n][1][-1] for n in sizes]
 
-    plt.scatter(range(len(expected_win_rates)), expected_win_rates, label="Probabilty")
-    plt.scatter(range(len(observed_win_rates)), observed_win_rates, label="Observed")
 
+    plt.plot(range(min(sizes), max(sizes) + 1), expected_win_rates, label="Random")
+    plt.plot(sizes, observed_win_rates, label="Model", marker="*")
+    plt.ylabel("Win Rate")
+    plt.xlabel("Number of Words")
+    plt.legend()
     plt.show()
 
 
 if __name__ == "__main__":
     plt.style.use("seaborn-bright")
-    #sizes = ACTION_SPACE_SIZES
-    sizes = [7, 10, 13, 16, 19, 23, 30, 40, 50, 100, 300]
+    sizes = ACTION_SPACE_SIZES
+    sizes = [7, 10, 13, 16, 19, 23, 30, 40, 50, 60, 70, 80, 90, 100, 300]
     plot_expected_observed_win_rate(sizes)
-    #plot_rewards([7, 10, 13, 16, 19, 23, 300])
-    #plot_win_rates([7, 10, 13, 16, 19, 23, 300])
+    # plot_rewards([7, 10, 13, 16, 19, 23, 300])
+    # plot_win_rates([7, 10, 13, 16, 19, 23, 300])

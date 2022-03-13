@@ -1,5 +1,5 @@
-valid_words = []
-"""valid_words = [
+#valid_words = []
+valid_words = [
     "aahed",
     "aalii",
     "aargh",
@@ -10658,4 +10658,3 @@ valid_words = []
     "zymes",
     "zymic",
 ]
-"""

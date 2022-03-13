@@ -6,8 +6,9 @@ import numpy as np
 from Search.save_results import save_results
 from random_search import simulate
 
-guesses, win_percents, action_space = simulate("aback", epochs=1000)
-save_results("RandomSearch", guesses, win_percents)
+if __name__ == "__main__":
+    guesses, win_percents, action_space = simulate(epochs=1000)
+    save_results("RandomSearch", guesses, win_percents)
 """fig, ax = plt.subplots(2)
 
 # Guesses Figure
